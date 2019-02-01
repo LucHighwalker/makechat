@@ -4,6 +4,11 @@ const app = express();
 //Socket.io has to use the http server
 const server = require('http').Server(app);
 
+const io = require('socket.io')(server);
+io.on("connection", (socket) => {
+  console.log("🔌 New user connected! 🔌");
+});
+
 //Express View Engine for Handlebars
 const exphbs = require('express-handlebars');
 app.engine(
@@ -16,6 +21,8 @@ app.engine(
   })
 );
 app.set('view engine', 'hbs');
+
+app.use('/public', express.static('public'))
 
 app.get('/', (req, res) => {
   res.render('index.hbs');
